@@ -1,0 +1,353 @@
+import sys,pygame
+pygame.init()
+from pygame import *
+from pygame.locals import *
+import time
+
+
+#CREATION FENETRE, ARRIERE PLAN, ICONE
+
+height = 400
+width =  700
+
+
+window = pygame.display.set_mode((700,500))
+windowrect = window.get_rect()
+pygame.display.set_caption("Froggy&Flybies")
+background = pygame.image.load("backgroundgame.png")
+
+icone = pygame.image.load("icon1.png")
+pygame.display.set_icon(icone)
+
+
+#CREATION VITESSE
+
+speed = [5,5]
+speed1 = [5,5]
+speed2 = [9,-9]
+speed3 = [-9,9]
+speed4 = [9,9]
+speed5 = [1,1]
+speed6 = [2,2]
+speed7 = [3,2]
+speed8 = [2,3]
+
+
+#CREATION SON POUR LANGUE ET MOUCHE
+
+langue_son = pygame.mixer.Sound("langue_son.wav")
+mouche_son = pygame.mixer.Sound("mouche_son.wav") 
+
+#CREATION P POUR POINTS SCORE
+
+p = 0
+
+#CREATION T POUR TIMER
+
+t = 3000 #Environ 30sec
+
+
+#CREATION TEMPS
+
+clock = pygame.time.Clock()
+
+#CREATION ZONE LANGUE FROGGY
+
+zone_clic = pygame.Rect(0,0,700,500)
+
+
+#CREATION FROGGY
+
+yoshi = pygame.image.load("yoshi3.png").convert()
+yoshi.set_colorkey(pygame.Color(255,255,0))
+
+
+#CREATION MOUCHES
+
+mouche = pygame.image.load("mouche.png").convert()  #mouche rouge SMALL
+mouche.set_colorkey(pygame.Color(255,242,0))
+moucherect = mouche.get_rect()
+
+mouche1 = pygame.image.load("mouche1.png").convert() #mouche rose LARGE
+mouche1.set_colorkey(pygame.Color(255,127,39))
+mouche1rect = mouche1.get_rect()
+
+mouche2 = pygame.image.load("mouche2.png").convert() #mouche bleue LARGE
+mouche2.set_colorkey(pygame.Color(136,0,21))
+mouche2rect = mouche2.get_rect()
+
+mouche3 = pygame.image.load("mouche3.png").convert() #mouche verte LARGE
+mouche3.set_colorkey(pygame.Color(185,122,87))
+mouche3rect = mouche3.get_rect()
+
+mouche4 = pygame.image.load("mouche4.png").convert() #mouche violette LARGE
+mouche4.set_colorkey(pygame.Color(255,174,201))
+mouche4rect = mouche4.get_rect()
+
+mouche5 = pygame.image.load("mouche5.png").convert() #mouche jaune SMALL
+mouche5.set_colorkey(pygame.Color(255,201,14))
+mouche5rect = mouche5.get_rect()
+
+mouche6 = pygame.image.load("mouche6.png").convert() #mouche fushia SMALL
+mouche6.set_colorkey(pygame.Color(181,230,29))
+mouche6rect = mouche6.get_rect()
+
+mouche7 = pygame.image.load("mouche7.png").convert() #mouche orange SMALL
+mouche7.set_colorkey(pygame.Color(112,146,190))
+mouche7rect = mouche7.get_rect()
+
+mouche8 = pygame.image.load("mouche8.png").convert() #mouche turquoise SMALL
+mouche8.set_colorkey(pygame.Color(195,195,195))
+mouche8rect = mouche8.get_rect()
+
+
+		
+
+#GAME LOOP                           #######
+continuer = True
+
+while continuer :
+
+
+	for event in pygame.event.get():
+		if event.type == QUIT:
+			continuer = False
+			break
+		mouche_son.play(loops=-1)  #BRUIT DE FOND MOUCHE QUI VOLE
+	
+
+
+	#TEXTE DE FOND
+
+	fond1 = pygame.font.SysFont("Arial", 40)
+	score = fond1.render( "Score : " + str(p) , True, (255,242,0))
+	timer = fond1.render( "Timer : " + str(t) + "ms" , True, (255,242,0))
+	t = t - 1
+
+
+	#ARRETER LE JEU QUAND LE TIMER S'ECOULE
+	if t < 0:
+
+		print("Et bien Froggy, tu sembles fatigué, ton score est de  " + str(p) )
+
+		t = 0
+		continuer = False
+		break
+	
+
+	#"MOUVEMENTS MOUCHE"
+
+	moucherect = moucherect.move(speed1) #mouche rouge SMALL
+	if moucherect.left < 0 or moucherect.right > width:
+		speed[0] = -speed[0]
+	if moucherect.top < 0 or moucherect.bottom > height:
+		speed[1] = -speed[1]
+
+
+	
+	mouche1rect = mouche1rect.move(speed3) #mouche rose LARGE
+	if mouche1rect.left < 0 or mouche1rect.right > width:
+		speed[0] = -speed[0]
+	if mouche1rect.top < 0 or mouche1rect.bottom > height:
+		speed[1] = -speed[1]
+
+
+
+	mouche2rect = mouche2rect.move(speed2) #mouche bleue LARGE
+	if mouche2rect.left < 0 or mouche2rect.right > width:
+		speed[0] = -speed[0]
+	if mouche2rect.top < 0 or mouche2rect.bottom > height:
+		speed[1] = -speed[1]
+
+
+		
+	mouche3rect = mouche3rect.move(speed3) #mouche verte LARGE
+	if mouche3rect.left < 0 or mouche3rect.right > width:
+		speed[0] = -speed[0]
+	if mouche3rect.top < 0 or mouche3rect.bottom > height:
+		speed[1] = -speed[1]
+
+
+	
+	mouche4rect = mouche4rect.move(speed4) #mouche violette LARGE
+	if mouche4rect.left < 0 or mouche4rect.right > width:
+		speed[0] = -speed[0]
+	if mouche4rect.top < 0 or mouche4rect.bottom > height:
+		speed[1] = -speed[1]
+
+
+		
+
+		mouche5rect = mouche5rect.move(speed) #mouche jaune SMALL
+	if mouche5rect.left < 0 or mouche5rect.right > width:
+		speed[0] = -speed[0]
+	if mouche5rect.top < 0 or mouche5rect.bottom > height:
+		speed[1] = -speed[1]
+
+
+
+	mouche6rect = mouche6rect.move(speed6) #mouche fushia SMALL
+	if mouche6rect.left < 0 or mouche6rect.right > width:
+		speed[0] = -speed[0]
+	if mouche6rect.top < 0 or mouche6rect.bottom > height:
+		speed[1] = -speed[1]
+
+
+		
+	mouche7rect = mouche7rect.move(speed) #mouche orange SMALL
+	if mouche7rect.left < 0 or mouche7rect.right > width:
+		speed[0] = -speed[0]
+	if mouche7rect.top < 0 or mouche7rect.bottom > height:
+		speed[1] = -speed[1]
+
+
+	
+	mouche8rect = mouche8rect.move(speed) #mouche turquoise SMALL
+	if mouche8rect.left < 0 or mouche8rect.right > width:
+		speed[0] = -speed[0]
+	if mouche8rect.top < 0 or mouche8rect.bottom > height:
+		speed[1] = -speed[1]
+
+
+
+
+
+
+###CREATION QUAND ON TOUCHE MOUCHE, SYSTEME DE POINT QUI AUGMENTE APPARAIT SUR L'ECRAN
+
+	if event.type == MOUSEBUTTONDOWN:
+		
+		#SI ON TOUCHE LA MOUCHE ALORS ...
+
+
+		if moucherect.collidepoint(event.pos): #SMALL
+		#	pygame.mixer.Sound.pause(mouche_son, 1)
+		#	pygame.mixer.Sound.play(langue_son, 1)
+			pygame.time.wait(100)
+			p = p + 1
+			score = fond1.render( "Score : " + str(p) , True, (0,0,0))
+			
+
+
+
+		if mouche1rect.collidepoint(event.pos): #LARGE
+		#	pygame.mixer.Sound.pause(mouche_son)
+		#	pygame.mixer.Sound.play(langue_son)
+			
+			pygame.time.wait(75) #petite pause de 75 millisecondes pour obtenir 1 ou 2 fois le +15
+			p = p + 15
+			score = fond1.render( "Score : " + str(p) , True, (0,0,0))
+
+
+
+
+		if mouche2rect.collidepoint(event.pos): #LARGE
+		#	pygame.mixer.Sound.pause(mouche_son)
+		#	pygame.mixer.Sound.play(langue_son)
+			pygame.time.wait(75) #petite pause de 75 millisecondes pour obtenir 1 ou 2 fois le +15
+			p = p + 15
+			score = fond1.render( "Score : " + str(p) , True, (0,0,0))
+
+
+
+
+		if mouche3rect.collidepoint(event.pos): #LARGE
+		#	pygame.mixer.Sound.pause(mouche_son)
+		#	pygame.mixer.Sound.play(langue_son)
+			pygame.time.wait(75)#petite pause de 75 millisecondes pour obtenir 1 ou 2 fois le +15
+			p = p + 15
+			score = fond1.render( "Score : " + str(p) , True, (0,0,0))
+
+
+
+
+		if mouche4rect.collidepoint(event.pos): #LARGE
+		#	pygame.mixer.Sound.pause(mouche_son)
+		#	pygame.mixer.Sound.play(langue_son)
+			pygame.time.wait(75)#petite pause de 75 millisecondes pour obtenir 1 ou 2 fois le +1
+			p = p + 15
+			score = fond1.render( "Score : " + str(p) , True, (0,0,0))
+
+
+
+
+		if mouche5rect.collidepoint(event.pos): #SMALL
+		#	pygame.mixer.Sound.pause(mouche_son)
+		#	pygame.mixer.Sound.play(langue_son)
+			pygame.time.wait(100)#petite pause de 100 millisecondes pour obtenir 1 seule fois le +1
+			p = p + 1
+			score = fond1.render( "Score : " + str(p) , True, (0,0,0))
+
+
+
+
+		if mouche6rect.collidepoint(event.pos): #SMALL
+		#	pygame.mixer.Sound.pause(mouche_son)
+		#	pygame.mixer.Sound.play(langue_son)
+			pygame.time.wait(100)#petite pause de 100 millisecondes pour obtenir 1 seule fois le +1
+			p = p + 1
+			score = fond1.render( "Score : " + str(p) , True, (0,0,0))
+
+
+
+
+
+		if mouche7rect.collidepoint(event.pos): #SMALL
+		#	pygame.mixer.Sound.pause(mouche_son)
+		#	pygame.mixer.Sound.play(langue_son)
+			pygame.time.wait(100)#petite pause de 100 millisecondes pour obtenir 1 seule fois le +1
+			p = p + 1
+			score = fond1.render( "Score : " + str(p) , True, (0,0,0))
+
+
+
+		if mouche8rect.collidepoint(event.pos): #SMALL
+		#	pygame.mixer.Sound.pause(mouche_son)
+		#	pygame.mixer.Sound.play(langue_son)
+			pygame.time.wait(100)#petite pause de 100 millisecondes pour obtenir 1 seule fois le +1
+			p = p + 1
+			score1 = fond1.render( "Score : " + str(p) , True, (0,0,0))
+			langue_son.play
+			
+	
+
+
+		
+
+	window.blit(background,(0,0)) 
+	window.blit(score, (0,470))
+	window.blit(yoshi,(200,301))
+	window.blit(mouche,moucherect)
+	window.blit(mouche1,mouche1rect)
+	window.blit(mouche2,mouche2rect)
+	window.blit(mouche3,mouche3rect)
+	window.blit(mouche4,mouche4rect)
+	window.blit(mouche5,mouche5rect)
+	window.blit(mouche6,mouche6rect)
+	window.blit(mouche7,mouche7rect)
+	window.blit(mouche8,mouche8rect)
+	
+	window.blit(timer, (490,470))
+	
+
+
+	clock.tick(1600)
+	pygame.display.flip()
+
+	#CREATION LANGUE FROGGY
+	if event.type == MOUSEBUTTONDOWN:
+		
+		if zone_clic.collidepoint(event.pos):
+	
+			end_mouse_pos = pygame.mouse.get_pos()
+			langue = pygame.draw.line(window, (253,108,158), (236,339), end_mouse_pos, 10)
+	
+
+	
+
+
+
+	pygame.display.flip()
+        
+
+pygame.display.quit()
